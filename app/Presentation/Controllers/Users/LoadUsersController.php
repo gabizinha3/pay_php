@@ -19,8 +19,9 @@ class LoadUsersController extends Controller
   public function handle($httpRequest) {
     try
     {
+      $production = $this->loadUsersUsecase->load($httpRequest->body);
       $httpResponse = new HttpResponse();
-      return $httpResponse->ok($this->loadUsersUsecase->load($httpRequest->body));
+      return $httpResponse->ok($production);
     }
     catch (Exception $err)
     {

@@ -14,7 +14,7 @@ class AdaptRoute
 
   public function handle(Request $httpRequest)
   {
-    $req = [
+    $req = (object) [
       'body' => $httpRequest->all()
     ];
     $httpResponse = $this->controller->handle($req);
