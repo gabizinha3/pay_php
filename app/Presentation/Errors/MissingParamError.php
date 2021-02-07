@@ -8,6 +8,6 @@ class MissingParamError extends Errors
 {
     public function __construct($paramName)
     {
-        parent::__construct('Missing param ' . $paramName);
+        parent::__construct('Missing param: ' . $paramName);
     }
 }
