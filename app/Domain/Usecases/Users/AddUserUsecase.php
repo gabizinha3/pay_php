@@ -24,7 +24,7 @@ class AddUserUsecase
     
     $newUser->save();
 
-    $balance = $this->addBalanceUsecase->add($newUser->id, 0);
+    $balance = $this->addBalanceUsecase->add($newUser->id, 100);
 
     return $newUser;
   }
