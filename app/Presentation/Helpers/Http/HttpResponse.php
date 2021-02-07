@@ -4,6 +4,7 @@ namespace App\Presentation\Helpers\Http;
 
 use App\Presentation\Errors\MissingParamError;
 use App\Presentation\Errors\InvalidParamError;
+use App\Presentation\Errors\NotFoundError;
 
 class HttpResponse
 {
@@ -21,6 +22,15 @@ class HttpResponse
         $error = new InvalidParamError($paramName);
         return (object) [
             'statusCode' => 400,
+            'body' => $error->message
+        ];
+    }
+
+    public function notFound($paramName)
+    {
+        $error = new NotFoundError($paramName);
+        return (object) [
+            'statusCode' => 404,
             'body' => $error->message
         ];
     }
