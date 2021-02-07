@@ -3,12 +3,22 @@
 namespace App\Presentation\Helpers\Http;
 
 use App\Presentation\Errors\MissingParamError;
+use App\Presentation\Errors\InvalidParamError;
 
 class HttpResponse
 {
     public function badRequest($paramName)
     {
         $error = new MissingParamError($paramName);
+        return (object) [
+            'statusCode' => 400,
+            'body' => $error->message
+        ];
+    }
+
+    public function invalidRequest($paramName)
+    {
+        $error = new InvalidParamError($paramName);
         return (object) [
             'statusCode' => 400,
             'body' => $error->message
