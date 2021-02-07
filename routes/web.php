@@ -13,6 +13,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::create('/users', 'UserController@index');
+Route::create('/users', 'UserController@get');
