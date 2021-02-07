@@ -16,7 +16,8 @@ class RequiredFieldValidation extends Validation
 
     public function validate($input)
     {
-        if(empty($input[$this->fieldName])){
+        if(empty($input[$this->fieldName]))
+        {
             $httpResponse = new HttpResponse();
             $error = $httpResponse->badRequest($this->fieldName);
             return $error;
