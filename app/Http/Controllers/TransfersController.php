@@ -16,6 +16,7 @@ use App\Domain\Usecases\Balances\SubtractBalanceUsecase;
 use App\Domain\Usecases\Balances\SumBalanceUsecase;
 use App\Http\Adapters\AdaptRoute;
 use App\Validations\RequiredFieldValidation;
+use App\Validations\EntryExistsValidation;
 use App\Validations\ValidationComposite;
 
 class TransfersController extends Controller
@@ -68,7 +69,7 @@ class TransfersController extends Controller
         return $transfer;
     }
 
-    private function makeValidation()
+    private function makeValidation($request)
     {
         $validations = [];
         $fields = [
@@ -80,6 +81,16 @@ class TransfersController extends Controller
         {
             array_push($validations, new RequiredFieldValidation($field));
         }
+
+        $fieldsEntry = [
+            'payer',
+            'payee'
+        ];
+        foreach ($fieldsEntry as $field)
+        {
+            array_push($validations, new EntryExistsValidation($field));
+        }
+
         return new ValidationComposite($validations);
     }
 
@@ -90,15 +101,20 @@ class TransfersController extends Controller
             $this->makeSubtractBalanceUsecase(),
             $this->makeAddTransferUsecase()
         );
+        $loadUsersUsecase = $this->makeLoadUsersUsecase();
         return (object) [
-            'transferToUser' => $transferToUser
+            'transferToUser' => $transferToUser,
+            'loadUsersUsecase' => $loadUsersUsecase
         ];
     }
 
     public function makeTransferToUserController()
     {
         $usecases = $this->makeUseCase();
-        $validation = $this->makeValidation();
+        $validationFields = $this->request;
+        $validationFields['payer'] = $usecases->loadUsersUsecase->load([ 'id' => $validationFields->payer_id ]);
+        $validationFields['payee'] = $usecases->loadUsersUsecase->load([ 'id' => $validationFields->payee_id ]);
+        $validation = $this->makeValidation($validationFields);
         $controller = new TransferToUserController($usecases->transferToUser, $validation);
         $adapter = new AdaptRoute($controller);
         return $adapter->handle($this->request);
