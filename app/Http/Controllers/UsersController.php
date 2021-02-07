@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Presentation\Controllers\Users\LoadUsersController;
 use App\Models\Users;
 use App\Domain\Usecases\Users\LoadUsersUsecase;
+use App\Http\Adapters\AdaptRoute;
 
 class UsersController extends Controller
 {
@@ -36,6 +37,7 @@ class UsersController extends Controller
     {
         $usecases = $this->makeUseCase();
         $controller = new LoadUsersController($usecases->loadUser);
-        return $controller->handle($this->request);
+        $adapter = new AdaptRoute($controller);
+        return $adapter->handle($this->request);
     }
 }
