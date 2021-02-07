@@ -9,7 +9,7 @@ class HttpResponse
     public function badRequest($paramName)
     {
         $error = new MissingParamError($paramName);
-        return [
+        return (object) [
             'statusCode' => 400,
             'body' => $error->message
         ];
@@ -17,14 +17,15 @@ class HttpResponse
 
     public function serverError()
     {
-        return [
-            'statusCode' => 500
+        return (object) [
+            'statusCode' => 500,
+            'body' => 'Internal error'
         ];
     }
 
     public function ok($data)
     {
-        return [
+        return (object) [
             'statusCode' => 200,
             'body' => $data
         ];
@@ -32,7 +33,7 @@ class HttpResponse
 
     public function customizeError($statusCode, $body)
     {
-        return [
+        return (object) [
             'statusCode' => $statusCode,
             'body' => $body
         ];
