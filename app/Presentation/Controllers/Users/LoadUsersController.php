@@ -20,7 +20,7 @@ class LoadUsersController extends Controller
     try
     {
       $httpResponse = new HttpResponse();
-      return $httpResponse->ok($this->loadUsersUsecase->load($httpRequest->query()));
+      return $httpResponse->ok($this->loadUsersUsecase->load($httpRequest->body));
     }
     catch (Exception $err)
     {
