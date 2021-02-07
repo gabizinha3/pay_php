@@ -15,7 +15,7 @@ class CreateUserTypesTable extends Migration
     {
         Schema::create('user_types', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 150);
+            $table->string('name', 150)->unique();
             $table->boolean('permission_ted');
             $table->timestamps();
         });
