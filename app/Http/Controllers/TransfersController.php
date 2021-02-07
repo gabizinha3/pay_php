@@ -17,6 +17,7 @@ use App\Domain\Usecases\Balances\SumBalanceUsecase;
 use App\Http\Adapters\AdaptRoute;
 use App\Validations\RequiredFieldValidation;
 use App\Validations\EntryExistsValidation;
+use App\Validations\GreaterThanValidation;
 use App\Validations\ValidationComposite;
 
 class TransfersController extends Controller
@@ -69,7 +70,7 @@ class TransfersController extends Controller
         return $transfer;
     }
 
-    private function makeValidation($request)
+    private function makeValidation()
     {
         $validations = [];
         $fields = [
@@ -91,6 +92,8 @@ class TransfersController extends Controller
             array_push($validations, new EntryExistsValidation($field));
         }
 
+        array_push($validations, new GreaterThanValidation('balanceAmount', 'minBalance'));
+
         return new ValidationComposite($validations);
     }
 
@@ -111,13 +114,22 @@ class TransfersController extends Controller
     public function makeTransferToUserController()
     {
         $usecases = $this->makeUseCase();
+
         $validationFields = $this->request;
         $validationFields['payer'] = $usecases->loadUsersUsecase->load([ 'id' => $validationFields->payer_id ]);
         $validationFields['payee'] = $usecases->loadUsersUsecase->load([ 'id' => $validationFields->payee_id ]);
-        $validation = $this->makeValidation($validationFields);
+
+        if(count($validationFields->payer) > 0)
+        {
+            $validationFields['balanceAmount'] = (floatval($validationFields->payer[0]->balance->amount) - floatval($validationFields->amount));
+            $validationFields['minBalance'] = 0;
+        }
+
+        $validation = $this->makeValidation();
+
         $controller = new TransferToUserController($usecases->transferToUser, $validation);
         $adapter = new AdaptRoute($controller);
-        return $adapter->handle($this->request);
+        return $adapter->handle($validationFields);
     }
 }
   
