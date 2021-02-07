@@ -13,5 +13,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::create('/users', 'UserController@index');
-Route::create('/users', 'UserController@get');
+// Route::create('/users', 'UsersController@index');
+Route::get('/users', 'UsersController@makeLoadUsersController');
