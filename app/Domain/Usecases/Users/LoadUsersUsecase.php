@@ -12,7 +12,7 @@ class LoadUsersUsecase
 
   public function load($query)
   {
-    $users = $this->usersRepository::where($query)->get();
+    $users = $this->usersRepository::where($query)->with(['balance', 'userType'])->get();
     return $users;
   }
 }
