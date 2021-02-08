@@ -34,6 +34,10 @@ class TransferToUserController extends Controller
         $httpRequest->body['payee_id'],
         $httpRequest->body['amount']
       );
+      if($production && !empty($production->statusCode))
+      {
+        return $httpResponse->customizeError($production->statusCode, $production->body);
+      }
       return $httpResponse->ok($production);
     }
     catch (Exception $err)

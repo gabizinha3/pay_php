@@ -10,6 +10,8 @@ use App\Models\Transfers;
 use App\Models\Balances;
 use App\Domain\Usecases\Transfers\TransferToUserUsecase;
 use App\Domain\Usecases\Transfers\AddTransferUsecase;
+use App\Domain\Usecases\Transfers\TransferGetAuthorizationUsecase;
+use App\Domain\Usecases\Transfers\TransferSendMessageUsecase;
 use App\Domain\Usecases\Users\LoadUsersUsecase;
 use App\Domain\Usecases\Users\AddUserUsecase;
 use App\Domain\Usecases\Balances\SubtractBalanceUsecase;
@@ -19,6 +21,7 @@ use App\Validations\RequiredFieldValidation;
 use App\Validations\EntryExistsValidation;
 use App\Validations\GreaterThanValidation;
 use App\Validations\ValidationComposite;
+use App\Infra\Http\RequestHttpClient;
 
 class TransfersController extends Controller
 {
@@ -70,6 +73,23 @@ class TransfersController extends Controller
         return $transfer;
     }
 
+    private function makeHttpClient() {
+        $http = new RequestHttpClient();
+        return $http;
+    }
+
+    private function makeTransferGetAuthorizationUsecase() {
+        $http = $this->makeHttpClient();
+        $transfer = new TransferGetAuthorizationUsecase($http);
+        return $transfer;
+    }
+
+    private function makeTransferSendMessageUsecase() {
+        $http = $this->makeHttpClient();
+        $transfer = new TransferSendMessageUsecase($http);
+        return $transfer;
+    }
+
     private function makeValidation()
     {
         $validations = [];
@@ -102,7 +122,9 @@ class TransfersController extends Controller
         $transferToUser = new TransferToUserUsecase(
             $this->makeSumBalanceUsecase(),
             $this->makeSubtractBalanceUsecase(),
-            $this->makeAddTransferUsecase()
+            $this->makeAddTransferUsecase(),
+            $this->makeTransferGetAuthorizationUsecase(),
+            $this->makeTransferSendMessageUsecase()
         );
         $loadUsersUsecase = $this->makeLoadUsersUsecase();
         return (object) [
