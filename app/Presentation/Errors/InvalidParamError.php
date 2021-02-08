@@ -4,10 +4,10 @@ namespace App\Presentation\Errors;
 
 use App\Presentation\Errors\Errors;
 
-class MissingParamError extends Errors
+class InvalidParamError extends Errors
 {
     public function __construct($paramName)
     {
-        parent::__construct('Missing param: ' . $paramName);
+        parent::__construct('Invalid param: ' . $paramName);
     }
 }

@@ -5,7 +5,7 @@ namespace App\Validations;
 use App\Validations\Protocols\Validation;
 use App\Presentation\Helpers\Http\HttpResponse;
 
-class RequiredFieldValidation extends Validation
+class EntryExistsValidation extends Validation
 {
     public $fieldName;
     public function __construct($fieldName)
@@ -16,10 +16,10 @@ class RequiredFieldValidation extends Validation
 
     public function validate($input)
     {
-        if(empty($input[$this->fieldName]))
+        if(empty($input[$this->fieldName]) || count($input[$this->fieldName]) <= 0)
         {
             $httpResponse = new HttpResponse();
-            $error = $httpResponse->badRequest($this->fieldName);
+            $error = $httpResponse->notFound($this->fieldName);
             return $error;
         }
     }

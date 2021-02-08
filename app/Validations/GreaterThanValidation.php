@@ -5,21 +5,23 @@ namespace App\Validations;
 use App\Validations\Protocols\Validation;
 use App\Presentation\Helpers\Http\HttpResponse;
 
-class RequiredFieldValidation extends Validation
+class GreaterThanValidation extends Validation
 {
     public $fieldName;
-    public function __construct($fieldName)
+    public $fieldToCompare;
+    public function __construct($fieldName, $fieldToCompare)
     {
         parent::__construct();
         $this->fieldName = $fieldName;
+        $this->fieldToCompare = $fieldToCompare;
     }
 
     public function validate($input)
     {
-        if(empty($input[$this->fieldName]))
+        if ($input[$this->fieldToCompare] > $input[$this->fieldName])
         {
             $httpResponse = new HttpResponse();
-            $error = $httpResponse->badRequest($this->fieldName);
+            $error = $httpResponse->customizeError(400, 'Invalid value to param: ' . $this->fieldName);
             return $error;
         }
     }

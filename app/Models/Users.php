@@ -22,4 +22,9 @@ class Users extends Model
     {
         return $this->belongsTo(UserTypes::class);
     }
+
+    public function balance()
+    {
+        return $this->hasOne(Balances::class, 'user_id');
+    }
 }
