@@ -23,6 +23,12 @@ class TransferToUserController extends Controller
     {
       $httpResponse = new HttpResponse();
 
+      $payer = $httpRequest->body['payer'][0];
+      if($payer['userType']->permission_ted !== true)
+      {
+        return $httpResponse->customizeError(401, 'User unauthorized to transfer');
+      }
+
       $errorValidation = $this->validation->validate($httpRequest->body);
       if ($errorValidation)
       {
