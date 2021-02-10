@@ -6,29 +6,33 @@
 
 2 - Run the command: docker-compose up -d --build
 
-3 - Run the command: docker-compose exec web sh
+3 - Run the command: docker-compose exec db sh
 
-4 - Run the command: php artisan migrate
+4 - Run the command: psql -U postgres -c "CREATE DATABASE pay"
 
 5 - Run the command: exit
 
-6 - Run the command: docker-compose exec db sh
+6 - Run the command: docker-compose exec web sh
 
-7 - Run the command: psql -U postgres -c "CREATE DATABASE pay"
+7 - Run the command: php artisan migrate
 
-8 - Run the command: psql -h db -U postgres
+8 - Run the command: exit
 
-9 - Run the command: \c pay
+9 - Run the command: docker-compose exec db sh
 
-10 - Run the command: insert into user_types(name, permission_ted, created_at, updated_at) values('User', true, now(), now());
+10 - Run the command: psql -h db -U postgres
 
-11 - Run the command: insert into user_types(name, permission_ted, created_at, updated_at) values('Shopkeeper', false, now(), now());
+11 - Run the command: \c pay
 
-12 - Run the command: exit
+12 - Run the command: insert into user_types(name, permission_ted, created_at, updated_at) values('User', true, now(), now());
 
-13 - Run the command: exit
+13 - Run the command: insert into user_types(name, permission_ted, created_at, updated_at) values('Shopkeeper', false, now(), now());
 
-14 - Open local server http://localhost:8000/
+14 - Run the command: exit
+
+15 - Run the command: exit
+
+16 - Open local server http://localhost:8000/
 
 # - endpoints
 
