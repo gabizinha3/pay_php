@@ -33,21 +33,39 @@
 # - endpoints
 
 - POST em /users
+
 -> Exemplo de Body da Requisição
+
 {
-    "name": "Gabriela Carolina Ferranti", $document, $email, $password, $user_type_id
+
+    "name": "Gabriela Carolina Ferranti",
+    
     "document": "Gabriela Carolina Ferranti",
+    
     "email": "gabrielaferranti@hotmail.com",
+    
     "password": "12345",
-    "user_type_id": 1,
+    
+    "user_type_id": 1
+    
 }
+
+
 
 - GET em /users
 
+
+
 - POST em /transfers
+
 -> Exemplo de Body da Requisição
+
 {
+
     "payer_id": 21,
+    
     "payee_id": 22,
+    
     "amount": 1.00
+    
 }
