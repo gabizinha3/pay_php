@@ -37,6 +37,7 @@
 -> Exemplo de Body da Requisição
 
 {
+
     "name": "Gabriela Carolina Ferranti",
     
     "document": "Gabriela Carolina Ferranti",
@@ -46,6 +47,7 @@
     "password": "12345",
     
     "user_type_id": 1
+    
 }
 
 
